@@ -27,9 +27,16 @@ def cadastrar(resp):
                 pais = input('digite a sigla do pais: ')
                 num = int(input('digite o numero da figurinha do jogador: '))
                 nome = input('digite o nome e sobrenome do jogador: ')
-                comandos.execute(f'insert into figurinhas values ("{pais}",{num},"{nome}");')
-                conexao.commit()
-                print('Cadastro realizado com sucesso!!')
+                comandos.execute(f"select * from figurinhas where num_fig = {num} and nome_abreviado = '{pais}';")
+                tabela_teste = comandos.fetchall()
+                if comandos.rowcount > 0:
+                    print("esse registro ja existe na tabela!!")
+                    for r in tabela_teste:
+                        print(f"a sigla da seleção e: {r[0]}, o nome da figurinha e: {r[1]}, o numero e {r[2]}")
+                elif comandos.rowcount <= 0:
+                    comandos.execute(f'insert into figurinhas values ("{pais}",{num},"{nome}");')
+                    conexao.commit()
+                    print('Cadastro realizado com sucesso!!')
                 desejo = input('deseja criar mais registros? ').split()
                 while desejo[0] != 's' and desejo[0] != 'n':
                     desejo = input('digite um valor valido: ').split()
@@ -61,19 +68,21 @@ def consutarEspecifico(resp):
     try:
         if resp == 1:
             while True:
-                nome_fig = input('digite o nome do jogador: ')
-                comandos.execute(f'select * from figurinhas where nome_fig = "{nome_fig}"')
+                nome_fig = input('digite o nome da figurinha: ')
+                num_fig = int(input("digite o numero da figurinha: "))
+                comandos.execute(f'select * from figurinhas where nome_fig = "{nome_fig}" and num_fig = {num_fig};')
                 table = comandos.fetchall()
                 if comandos.rowcount > 0:
                     for r in table:
                         print(f'A sigla e: {r[0]}, O numero e: {r[1]} e O nome e: {r[2]}')
                 elif comandos.rowcount <=0:
-                    rep = input("Deseja adicionar o jogador? (sim/nao) ").split()
-                    while rep[0] != "s" and rep[0] != "n":
+                    print("o jogador nao existe na tabela")
+                    rep = int(input("Deseja adicionar o jogador? (1-SIM!!!!/ 2-NAO!!!!!) "))
+                    while rep != 1 and rep != 2:
                         rep = int(input('Digite um valor valido! '))
-                    if rep[0] == "s":
+                    if rep == 1:
                         cadastrar(rep)
-                    elif rep[0] == "n":
+                    elif rep == 2:
                         break
                 desejo1 = input('deseja continuar: (s/n) ').split()
                 while desejo1[0] != 's' and desejo1[0] != 'n':
@@ -82,6 +91,8 @@ def consutarEspecifico(resp):
                     continue
                 elif desejo1[0] == 'n':
                     break
+        conexao.close()
+        comandos.close()
     except Exception as erro:
         print(f'ocorreu o seguinte erro: {erro}')
 
@@ -361,7 +372,7 @@ if abrir_banco() == 1:
                 1 - TABELA FIGURINHAS
                 0- TABELA ESPECIAIS''')
 
-        tabela = int(input('digite o numero equivalente a tabela que deseja fazer a soma de registros: '))
+        tabela = int(input('digite o numero equivalente a tabela que deseja mostrar todos os registros: '))
         while tabela != 1 and tabela != 0:
             tabela = int(input('digite um valor valido: '))
         consultarTudo(tabela)
@@ -371,7 +382,7 @@ if abrir_banco() == 1:
                 1 - TABELA FIGURINHAS
                 0- TABELA ESPECIAIS''')
 
-        tabela = int(input('digite o numero equivalente a tabela que deseja fazer a soma de registros: '))
+        tabela = int(input('digite o numero equivalente a tabela que deseja consultar a figurinha: '))
         while tabela != 1 and tabela != 0:
             tabela = int(input('digite um valor valido: '))
         consutarEspecifico(tabela)

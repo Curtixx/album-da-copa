@@ -1,4 +1,7 @@
 import mysql.connector
+import pandas as pd
+
+
 
 def abrir_banco():
     try:
@@ -37,7 +40,7 @@ def cadastrar(resp):
                     comandos.execute(f'insert into figurinhas values ("{pais}",{num},"{nome}");')
                     conexao.commit()
                     print('Cadastro realizado com sucesso!!')
-                desejo = input('deseja criar mais registros? ').split()
+                desejo = input('deseja criar mais registros? (S/N)').split()
                 while desejo[0] != 's' and desejo[0] != 'n':
                     desejo = input('digite um valor valido: ').split()
                 if desejo[0] == 's':
@@ -292,6 +295,41 @@ def consultarTudo(resp):
             for r in table3:
                 print(f'Nome: {r[0]}, Raridade: {r[1]}')
 
+def gerar_excel(resp):
+    dicionario = {}
+    listaSigla = []
+    listaNum = []
+    listaNome= []
+    listaRaridade =[]
+    if resp == 1:
+        comandos.execute(f'select * from figurinhas order by nome_abreviado ASC;')
+        tabela4 = comandos.fetchall()
+        print(type(tabela4))
+        if comandos.rowcount > 0:
+            for r in tabela4:
+                listaSigla.append(r[0])
+                listaNum.append(r[1])
+                listaNome.append(r[2])
+            dicionario['Sigla'] = listaSigla
+            dicionario['Numero'] = listaNum
+            dicionario['Nome'] = listaNome
+            df = pd.DataFrame(dicionario)
+            print(df)
+            df.to_excel(r"E:\Desktop\figurinhas.xlsx", sheet_name="Planilha1", header=True, index=False)
+    if resp == 0:
+        comandos.execute(f'select * from especiais order by nome_especial asc;')
+        tabela4 = comandos.fetchall()
+        if comandos.rowcount > 0:
+            listaNome = []
+            for r in tabela4:
+                listaNome.append(r[0])
+                listaRaridade.append(r[1])
+            dicionario = {}
+            dicionario['Nome'] = listaNome
+            dicionario['Raridade'] = listaRaridade
+            df = pd.DataFrame(dicionario)
+            df.to_excel(r"E:\Desktop\figurinhasEspeciais.xlsx", sheet_name="Planilha1", header=True, index=False)
+
 #FAZER UM READ APENAS PARA O NOME OU NUMERO DO JOGADOR
 #FAZER UMA FUNÇÃO PARA ENVIAR A PLANILHA POR EMAIL
 
@@ -307,11 +345,12 @@ if abrir_banco() == 1:
     T - TOTAL DE REGISTROS
     V - VER TODOS OS REGISTROS
     E - CONSUTAR RESGISTRO PELO NOME
+    G - GERAR EXCEL
     --------------------
     QUAL FUNÇÃO DESEJA REALIZAR?  
         ''')
-    resp = input('digite a inicial da função que deseja realizar: ')
-    while resp != 'c' and resp != 'r' and resp != 'u' and resp != 'd' and resp != 's' and resp != 't' and resp != 'v' and resp != 'e':
+    resp = input('digite a inicial da função que deseja realizar: ').lower()
+    while resp != 'c' and resp != 'r' and resp != 'u' and resp != 'd' and resp != 's' and resp != 't' and resp != 'v' and resp != 'e' and resp != 'g':
         resp = input('digite um valor valido: ')
     if resp == 'c':
 
@@ -382,7 +421,16 @@ if abrir_banco() == 1:
                 1 - TABELA FIGURINHAS
                 0- TABELA ESPECIAIS''')
 
-        tabela = int(input('digite o numero equivalente a tabela que deseja consultar a figurinha: '))
+        tabela = int(input('digite o numero equivalente a tabela que deseja fazer a ação: '))
         while tabela != 1 and tabela != 0:
             tabela = int(input('digite um valor valido: '))
         consutarEspecifico(tabela)
+
+    if resp == 'g':
+        print('''
+                        1 - TABELA FIGURINHAS
+                        0- TABELA ESPECIAIS''')
+        tabela = int(input("digite o numero equivalente a tabela que deseja fazer a ação: "))
+        while tabela != 1 and tabela != 0:
+            tabela = int(input('digite um valor valido: '))
+        gerar_excel(tabela)

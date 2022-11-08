@@ -388,7 +388,7 @@ if abrir_banco() == 1:
     if resp == 'c':
 
         print('''
-                1 - TABELA FIGURINHAS
+                1- TABELA FIGURINHAS
                 0- TABELA ESPECIAIS''')
 
         tabela = int(input('Digite o numero equivalente a tabela que deseja fazer o cadastro: '))
@@ -398,7 +398,7 @@ if abrir_banco() == 1:
 
     if resp == 'r':
         print('''
-                1 - TABELA FIGURINHAS
+                1- TABELA FIGURINHAS
                 0- TABELA ESPECIAIS''')
 
         tabela = int(input('Digite o numero equivalente a tabela que deseja fazer a consulta: '))
@@ -408,7 +408,7 @@ if abrir_banco() == 1:
 
     if resp == 'u':
         print('''
-                1 - TABELA FIGURINHAS
+                1- TABELA FIGURINHAS
                 0- TABELA ESPECIAIS''')
 
         tabela = int(input('Digite o numero equivalente a tabela que deseja fazer a alteração: '))
@@ -418,7 +418,7 @@ if abrir_banco() == 1:
 
     if resp == 'd':
         print('''
-                1 - TABELA FIGURINHAS
+                1- TABELA FIGURINHAS
                 0- TABELA ESPECIAIS''')
 
         tabela = int(input('Digite o numero equivalente a tabela que deseja fazer a exclusão: '))
@@ -431,7 +431,7 @@ if abrir_banco() == 1:
 
     if resp == 't':
         print('''
-                1 - TABELA FIGURINHAS
+                1- TABELA FIGURINHAS
                 0- TABELA ESPECIAIS''')
 
         tabela = int(input('Digite o numero equivalente a tabela que deseja fazer a soma de registros: '))
@@ -441,7 +441,7 @@ if abrir_banco() == 1:
 
     if resp == 'v':
         print('''
-                1 - TABELA FIGURINHAS
+                1- TABELA FIGURINHAS
                 0- TABELA ESPECIAIS''')
 
         tabela = int(input('Digite o numero equivalente a tabela que deseja mostrar todos os registros: '))
@@ -451,7 +451,7 @@ if abrir_banco() == 1:
 
     if resp == 'e':
         print('''
-                1 - TABELA FIGURINHAS
+                1- TABELA FIGURINHAS
                 0- TABELA ESPECIAIS''')
 
         tabela = int(input('Digite o numero equivalente a tabela que deseja fazer a ação: '))
@@ -461,7 +461,7 @@ if abrir_banco() == 1:
 
     if resp == 'g':
         print('''
-                        1 - TABELA FIGURINHAS
+                        1- TABELA FIGURINHAS
                         0- TABELA ESPECIAIS''')
         tabela = int(input("Digite o numero equivalente a tabela que deseja fazer a ação: "))
         while tabela != 1 and tabela != 0:
